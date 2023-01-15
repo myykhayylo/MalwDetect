@@ -11,9 +11,6 @@ def generate(dataset,file):
     "lenghtDom","lenghtSub","lenghtPath","numLetters","numDigits","PunyCode","suspWords","https","email","TLD","label"])
         
     for i in range(len(dataset)):
-    #for i in range(100): 
-        if (i%1000 == 0):
-            print (i)
         url = dataset.iloc[i]["url"]
         label = dataset.iloc[i]["status"]
         #f1 = featureExtraction.yearsFromExpiration(url)
