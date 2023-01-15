@@ -13,28 +13,6 @@ from tld.exceptions import TldDomainNotFound
 from tld.exceptions import TldBadUrl
 
 
-#ritorna il numero di anni mancanti alla fine della registrazione del dominio 
-def yearsFromExpiration(url):
-    #bisogna controllare prima se l 'host name è un ip perchè mette un punto di troppo
-
-    result = tldextract.extract(url)
-    domain = result.domain +"."+result.suffix
-    print("richiesta fatta al dominio "+domain)
-    resp = req.get("https://www.whatsmydns.net/api/domain?q="+domain)
-    json = resp.json()
-    # expires is in ISO-8601 
-    expires = json["data"]["expires"]
-    
-    if expires is None: 
-        print ("data non disponibile")
-        return None
-    else:
-        dateOfExpiration = datetime.fromisoformat(expires).date()
-        now = datetime.now().date()
-        yearsOnline = int(dateOfExpiration.strftime("%Y")) - int(now.strftime("%Y"))
-        print("risultato--->",yearsOnline)
-        return yearsOnline
-
 def isIP(url):
     match = re.search(
         '(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.'
@@ -188,52 +166,7 @@ def httpsInDomOrSub(url):
     else:
         return 0
 
-#la durate in anni di quanto è vissuto il dominio
-def ageOfDomain(url):
-    result = tldextract.extract(url)
-    domain = result.domain +"."+result.suffix
-    print("richiesta fatta al dominio "+domain)
-    resp = req.get("https://www.whatsmydns.net/api/domain?q="+domain)
-    json = resp.json()
-    # expires is in ISO-8601 
-    created = json["data"]["created"]
-    
-    if created is None: 
-        print ("data non disponibile")
-        return None
-    else:
-        dateOfCreation = datetime.fromisoformat(created).date()
-        now = datetime.now().date()
-        yearsOnline = int(now.strftime("%Y")) - int(dateOfCreation.strftime("%Y"))
-        return yearsOnline
-
-
-def pageRank(url):
-    serviceUrl = 'https://checkpagerank.net/check-page-rank.php'
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    
-    data = {"name": "sandalychacosklep.com"}
- 
-    response = req.post(serviceUrl, headers=headers,data=data)
-    print("Status Code", response.status_code)
-    print(response.text)
-
-    #extract useful information
-    s = 'Google PageRank:</b></font> <font color="#000099"><b>'
-    start = response.text.find(s) + len(s)
-    end = response.text.find("/10", start)
-    ran = response.text[start:end]
-    print(ran)
-
-#ritorna 1 se nella nel link è presente la porta 0 altrimenti
-def port(url):
-    newUrl = urlparse(url)
-    if newUrl.port is None:
-        return 0
-    else:
-        return 1
-
-#controlla se nella path ci sono temini pericolosi come: 'txt’, ‘exe’, ‘js’ 
+ #controlla se nella path ci sono temini pericolosi come: 'txt’, ‘exe’, ‘js’ 
 
 from re import search
 
@@ -249,15 +182,6 @@ def numberSub(url):
     sub = tldextract.extract(url).subdomain
     numberOfSub = sub.count(".") + 1
     return numberOfSub
-
-#non fatto
-from tld import get_tld
-def checkTLD(url):
-    tld = get_tld(url) 
-    print("tld ="+tld)
-    serviceUrl = "https://www.spamhaus.org/statistics/checktld/"
-    response = req.get(serviceUrl+tld)
-    print(response.text)
 
 def lenghtDom(url):
     return len(tldextract.extract(url).domain)
