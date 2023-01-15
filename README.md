@@ -13,3 +13,10 @@ Il **secondo obbiettivo** è quello di mostrare la pipeline di un modello di mac
 - **finalDataset.csv** questo è il dataset finale (url + feature) generato in fase di proggettazione.
 - **Demo.py** questa è una piccola demo che deve utilizza il modello creato per predire url inseriti dall'utente.
 
+### Cone replicare il progetto:
+per replicare il progetto è necessario runnare il file progetto.ipynb. Solo dopo aver finito di runnare tale file, è possibile visualizzare la demo. Questo perchè alla fine del Jupyter notebook viene creato un file (ovvero modelRF.joblib) che verrà utilizzato da Demo.py. Senza quel filela demo non può essere avviata.
+
+### Accortenze:
+1. è sconsigliato rigenerare il finalDataset.csv in quanto la sua generazione richiede molto tempo-
+2. Alcune celle, nello specifico le celle che effettuano la grid search richiedono tempi molto lunghi. Tali celle possono essere saltate in quanto sono solo dimostrative.
+
